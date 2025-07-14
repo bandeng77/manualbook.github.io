@@ -20,11 +20,29 @@
       box-shadow: 0 6px 20px rgba(0,0,0,0.15);
       width: 100%;
       max-width: 900px;
+      position: relative;
     }
     .logo {
       display: block;
       margin: 0 auto 20px;
       max-width: 180px;
+    }
+    .user-info {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 14px;
+    }
+    .user-info span {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    .logout {
+      background: none;
+      border: none;
+      color: #007f7f;
+      cursor: pointer;
+      font-weight: bold;
     }
     h1 {
       text-align: center;
@@ -92,6 +110,11 @@
 </head>
 <body>
   <div class="container">
+    <div class="user-info">
+      <span id="userEmail"></span>
+      <button class="logout" onclick="logout()">Logout</button>
+    </div>
+
     <img src="genetek-logo.png" alt="Genetek Logo" class="logo" />
     <h1>PANDUAN</h1>
     
@@ -132,37 +155,52 @@
     </table>
   </div>
 
-  <!-- Script pencarian dan login check -->
-  <script>
-    function filterTable() {
-      const input = document.getElementById("searchInput");
-      const filter = input.value.toLowerCase();
-      const table = document.getElementById("panduanTable");
-      const trs = table.getElementsByTagName("tr");
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
-      for (let i = 1; i < trs.length; i++) {
-        const tdFile = trs[i].getElementsByTagName("td")[1];
-        const tdDivisi = trs[i].getElementsByTagName("td")[2];
-        const tdName = trs[i].getElementsByTagName("td")[3];
-        if (tdFile && tdDivisi && tdName) {
-          const fileText = tdFile.textContent.toLowerCase();
-          const divisiText = tdDivisi.textContent.toLowerCase();
-          const nameText = tdName.textContent.toLowerCase();
-          trs[i].style.display =
-            fileText.includes(filter) ||
-            divisiText.includes(filter) ||
-            nameText.includes(filter)
-              ? ""
-              : "none";
-        }
+  <!-- Konfigurasi Firebase -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAtZe_Zo4EYD3QUe2aIveHnawRb3GXsVJM",
+      authDomain: "panduan-genetek.firebaseapp.com",
+      projectId: "panduan-genetek",
+      storageBucket: "panduan-genetek.firebasestorage.app",
+      messagingSenderId: "654454090409",
+      appId: "1:654454090409:web:d1c4bc92b9be50218c57b8"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+  <!-- Login check dan logout -->
+  <script>
+    // Auto cek login
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        document.getElementById("userEmail").innerText = user.email;
+      } else {
+        window.location.href = "login.html";
       }
+    });
+
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        window.location.href = "login.html";
+      });
     }
 
-    // Cek login
-    if (sessionStorage.getItem("loggedIn") !== "yes") {
-      window.location.href = "login.html";
+    // Pencarian
+    function filterTable() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const rows = document.querySelectorAll("#panduanTable tbody tr");
+      rows.forEach(row => {
+        const [no, file, divisi, nama] = row.children;
+        const match = [file, divisi, nama].some(td =>
+          td.textContent.toLowerCase().includes(input)
+        );
+        row.style.display = match ? "" : "none";
+      });
     }
   </script>
-  <script src="login.js"></script>
 </body>
 </html>
