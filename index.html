@@ -132,26 +132,7 @@
           <th>Download</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>PA/IT/VII/2025/001</td>
-          <td>HR</td>
-          <td>Panduan Penambahan Signature Email Resmi di Microsoft Outlook</td>
-          <td>
-            <a class="download-icon" href="https://drive.google.com/uc?export=download&id=1X45tcCjezMqpi8IcK8c_ZD29frLN9xlM" download title="Download">⬇️</a>
-          </td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>PA/IT/VII/2025/002</td>
-          <td>HR</td>
-          <td>Panduan Penambahan Signature Email Resmi di Carbonio</td>
-          <td>
-            <a class="download-icon" href="https://drive.google.com/uc?export=download&id=1xTCGFMfyeqwtLI74GN0-N7bmMazx0O4g" download title="Download">⬇️</a>
-          </td>
-        </tr>
-      </tbody>
+      <tbody></tbody>
     </table>
   </div>
 
@@ -165,7 +146,7 @@
       apiKey: "AIzaSyAtZe_Zo4EYD3QUe2aIveHnawRb3GXsVJM",
       authDomain: "panduan-genetek.firebaseapp.com",
       projectId: "panduan-genetek",
-      storageBucket: "panduan-genetek.appspot.com", // ← perbaikan di sini
+      storageBucket: "panduan-genetek.appspot.com",
       messagingSenderId: "654454090409",
       appId: "1:654454090409:web:d1c4bc92b9be50218c57b8"
     };
@@ -176,7 +157,6 @@
   <script>
     let lastActivity = Date.now();
 
-    // Cek login
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         document.getElementById("userEmail").innerText = user.email;
@@ -185,14 +165,12 @@
       }
     });
 
-    // Logout
     function logout() {
       firebase.auth().signOut().then(() => {
         window.location.href = "login.html";
       });
     }
 
-    // Filter table
     function filterTable() {
       const input = document.getElementById("searchInput").value.toLowerCase();
       const rows = document.querySelectorAll("#panduanTable tbody tr");
@@ -205,11 +183,9 @@
       });
     }
 
-    // Track aktivitas
     document.body.addEventListener("mousemove", () => lastActivity = Date.now());
     document.body.addEventListener("keydown", () => lastActivity = Date.now());
 
-    // Auto logout setelah 30 menit tidak aktif
     setInterval(() => {
       if (Date.now() - lastActivity > 30 * 60 * 1000) {
         firebase.auth().signOut().then(() => {
@@ -217,6 +193,34 @@
         });
       }
     }, 60 * 1000);
+  </script>
+
+  <!-- Load data from Google Sheets -->
+  <script>
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/1Vf3e0w4I8DW6j8tsjeiRfVN3Q3UMKrerL6gpbd1zxAw/gviz/tq?tqx=out:csv&sheet=panduan";
+
+    fetch(sheetUrl)
+      .then(res => res.text())
+      .then(csv => {
+        const rows = csv.split("\n").slice(1); // skip header
+        const tableBody = document.querySelector("#panduanTable tbody");
+        tableBody.innerHTML = "";
+
+        rows.forEach(row => {
+          const cols = row.split(",").map(col => col.replace(/"/g, "").trim());
+          if (cols.length < 5 || !cols[0]) return;
+
+          const html = `
+            <tr>
+              <td>${cols[0]}</td>
+              <td>${cols[1]}</td>
+              <td>${cols[2]}</td>
+              <td>${cols[3]}</td>
+              <td><a class="download-icon" href="${cols[4]}" target="_blank" download title="Download">⬇️</a></td>
+            </tr>`;
+          tableBody.innerHTML += html;
+        });
+      });
   </script>
 </body>
 </html>
