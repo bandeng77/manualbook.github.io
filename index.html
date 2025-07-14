@@ -156,25 +156,27 @@
   </div>
 
   <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 
-  <!-- Konfigurasi Firebase -->
+  <!-- Firebase config -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAtZe_Zo4EYD3QUe2aIveHnawRb3GXsVJM",
       authDomain: "panduan-genetek.firebaseapp.com",
       projectId: "panduan-genetek",
-      storageBucket: "panduan-genetek.firebasestorage.app",
+      storageBucket: "panduan-genetek.appspot.com", // ← perbaikan di sini
       messagingSenderId: "654454090409",
       appId: "1:654454090409:web:d1c4bc92b9be50218c57b8"
     };
     firebase.initializeApp(firebaseConfig);
   </script>
 
-  <!-- Login check dan logout -->
+  <!-- Login check + Logout + Search + Auto-logout -->
   <script>
-    // Auto cek login
+    let lastActivity = Date.now();
+
+    // Cek login
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         document.getElementById("userEmail").innerText = user.email;
@@ -183,13 +185,14 @@
       }
     });
 
+    // Logout
     function logout() {
       firebase.auth().signOut().then(() => {
         window.location.href = "login.html";
       });
     }
 
-    // Pencarian
+    // Filter table
     function filterTable() {
       const input = document.getElementById("searchInput").value.toLowerCase();
       const rows = document.querySelectorAll("#panduanTable tbody tr");
@@ -201,6 +204,19 @@
         row.style.display = match ? "" : "none";
       });
     }
+
+    // Track aktivitas
+    document.body.addEventListener("mousemove", () => lastActivity = Date.now());
+    document.body.addEventListener("keydown", () => lastActivity = Date.now());
+
+    // Auto logout setelah 30 menit tidak aktif
+    setInterval(() => {
+      if (Date.now() - lastActivity > 30 * 60 * 1000) {
+        firebase.auth().signOut().then(() => {
+          window.location.href = "login.html";
+        });
+      }
+    }, 60 * 1000);
   </script>
 </body>
 </html>
