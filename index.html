@@ -116,9 +116,7 @@
           <td>IT</td>
           <td>Panduan Penambahan Signature Email Resmi di Microsoft Outlook</td>
           <td>
-            <a class="download-icon" href="https://drive.google.com/uc?export=download&id=1X45tcCjezMqpi8IcK8c_ZD29frLN9xlM" download title="Download">
-              ⬇️
-            </a>
+            <a class="download-icon" href="https://drive.google.com/uc?export=download&id=1X45tcCjezMqpi8IcK8c_ZD29frLN9xlM" download title="Download">⬇️</a>
           </td>
         </tr>
         <tr>
@@ -127,15 +125,14 @@
           <td>IT</td>
           <td>Panduan Penambahan Signature Email Resmi di Carbonio</td>
           <td>
-            <a class="download-icon" href="https://drive.google.com/uc?export=download&id=1xTCGFMfyeqwtLI74GN0-N7bmMazx0O4g" download title="Download">
-              ⬇️
-            </a>
+            <a class="download-icon" href="https://drive.google.com/uc?export=download&id=1xTCGFMfyeqwtLI74GN0-N7bmMazx0O4g" download title="Download">⬇️</a>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
+  <!-- Script pencarian dan login check -->
   <script>
     function filterTable() {
       const input = document.getElementById("searchInput");
@@ -159,6 +156,11 @@
               : "none";
         }
       }
+    }
+
+    // Cek login
+    if (sessionStorage.getItem("loggedIn") !== "yes") {
+      window.location.href = "login.html";
     }
   </script>
 </body>
