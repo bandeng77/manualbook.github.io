@@ -31,9 +31,20 @@
       color: #007f7f;
       margin-top: 0;
     }
+    .search-box {
+      margin-bottom: 20px;
+      text-align: right;
+    }
+    .search-box input {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 300px;
+    }
     table {
       width: 100%;
-      margin-top: 20px;
+      margin-top: 10px;
       border-collapse: collapse;
       background-color: #ffffff;
       box-shadow: 0 0 10px rgba(0,0,0,0.05);
@@ -71,6 +82,9 @@
       h1 {
         font-size: 22px;
       }
+      .search-box {
+        text-align: left;
+      }
     }
   </style>
 </head>
@@ -78,7 +92,12 @@
   <div class="container">
     <img src="genetek-logo.png" alt="Genetek Logo" class="logo" />
     <h1>PANDUAN</h1>
-    <table>
+    
+    <div class="search-box">
+      <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari berdasarkan Nomor File atau Nama...">
+    </div>
+
+    <table id="panduanTable">
       <thead>
         <tr>
           <th>No</th>
@@ -111,5 +130,28 @@
       </tbody>
     </table>
   </div>
+
+  <script>
+    function filterTable() {
+      const input = document.getElementById("searchInput");
+      const filter = input.value.toLowerCase();
+      const table = document.getElementById("panduanTable");
+      const trs = table.getElementsByTagName("tr");
+
+      for (let i = 1; i < trs.length; i++) {
+        const tdFile = trs[i].getElementsByTagName("td")[1];
+        const tdName = trs[i].getElementsByTagName("td")[2];
+        if (tdFile && tdName) {
+          const fileText = tdFile.textContent || tdFile.innerText;
+          const nameText = tdName.textContent || tdName.innerText;
+          trs[i].style.display =
+            fileText.toLowerCase().includes(filter) ||
+            nameText.toLowerCase().includes(filter)
+              ? ""
+              : "none";
+        }
+      }
+    }
+  </script>
 </body>
 </html>
