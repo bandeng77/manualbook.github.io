@@ -5,77 +5,167 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PANDUAN</title>
   <style>
+    :root {
+      --primary-color: #007f7f;
+      --primary-light: #7FFFD4;
+      --primary-dark: #004d4d;
+      --secondary-color: #ffffff;
+      --text-color: #333333;
+      --border-color: #dddddd;
+      --hover-color: #f0fbfb;
+      --shadow: 0 6px 20px rgba(0,0,0,0.15);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #7FFFD4;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #7FFFD4 0%, #5fd4b8 100%);
       margin: 0;
       padding: 40px 20px;
       display: flex;
       justify-content: center;
+      min-height: 100vh;
+      color: var(--text-color);
     }
+
     .container {
-      background: #ffffff;
+      background: var(--secondary-color);
       padding: 30px;
       border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      box-shadow: var(--shadow);
       width: 100%;
-      max-width: 900px;
+      max-width: 1000px;
       position: relative;
+      transition: var(--transition);
     }
+
     .logo {
       display: block;
       margin: 0 auto 20px;
       max-width: 180px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
+
     .user-info {
       position: absolute;
       top: 20px;
       right: 30px;
       font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
+
     .user-info span {
       font-weight: bold;
-      margin-right: 10px;
+      color: var(--primary-dark);
     }
+
     .logout {
-      background: none;
+      background: var(--primary-color);
+      color: white;
       border: none;
-      color: #007f7f;
+      padding: 6px 12px;
+      border-radius: 4px;
       cursor: pointer;
       font-weight: bold;
+      transition: var(--transition);
     }
+
+    .logout:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
     h1 {
       text-align: center;
-      color: #007f7f;
+      color: var(--primary-color);
       margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 2.2rem;
+      position: relative;
+      padding-bottom: 10px;
     }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: var(--primary-light);
+      border-radius: 2px;
+    }
+
     .search-box {
       margin-bottom: 20px;
       text-align: right;
+      position: relative;
     }
+
     .search-box input {
-      padding: 8px 12px;
-      border: 1px solid #ccc;
+      padding: 10px 15px;
+      border: 1px solid var(--border-color);
       border-radius: 8px;
       width: 100%;
       max-width: 300px;
+      font-size: 14px;
+      transition: var(--transition);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 2px 8px rgba(0,127,127,0.2);
+    }
+
+    .search-box::before {
+      content: '🔍';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary-color);
+      z-index: 1;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      margin-top: 10px;
+      border: 2px solid var(--primary-dark);
+    }
+
     table {
       width: 100%;
-      margin-top: 10px;
       border-collapse: collapse;
-      background-color: #ffffff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-      border: 2px solid #004d4d;
+      background-color: var(--secondary-color);
     }
+
     th, td {
-      padding: 12px 16px;
-      border: 1px solid #ccc;
+      padding: 14px 16px;
+      border: 1px solid var(--border-color);
+      text-align: left;
     }
+
     th {
-      background-color: #7FFFD4;
-      color: #004d4d;
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 600;
+      position: sticky;
+      top: 0;
     }
+
     td:first-child,
     td:last-child,
     th:first-child,
@@ -84,26 +174,138 @@
     th:nth-child(3) {
       text-align: center;
     }
-    tr:hover {
-      background-color: #f0fbfb;
+
+    tr {
+      transition: var(--transition);
     }
+
+    tr:hover {
+      background-color: var(--hover-color);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
     .download-icon {
       text-decoration: none;
-      color: #007f7f;
+      color: var(--primary-color);
       font-size: 18px;
+      display: inline-block;
+      padding: 5px;
+      border-radius: 4px;
+      transition: var(--transition);
     }
+
     .download-icon:hover {
-      color: #004d4d;
+      color: var(--primary-dark);
+      background-color: var(--primary-light);
+      transform: scale(1.2);
     }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: var(--primary-color);
+    }
+
+    .spinner {
+      border: 4px solid rgba(0, 127, 127, 0.2);
+      border-radius: 50%;
+      border-top: 4px solid var(--primary-color);
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 5px;
+    }
+
+    .pagination button {
+      background: var(--secondary-color);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+
+    .pagination button:hover {
+      background: var(--primary-light);
+    }
+
+    .pagination button.active {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+    }
+
+    .results-info {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--primary-dark);
+      text-align: right;
+    }
+
     @media (max-width: 768px) {
+      body {
+        padding: 20px 10px;
+      }
+      
       .container {
         padding: 20px;
       }
+      
       h1 {
-        font-size: 22px;
+        font-size: 1.8rem;
       }
+      
+      .user-info {
+        position: static;
+        justify-content: flex-end;
+        margin-bottom: 15px;
+      }
+      
       .search-box {
         text-align: left;
+      }
+      
+      .search-box input {
+        max-width: 100%;
+      }
+      
+      th, td {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      th, td {
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+      
+      .user-info {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 5px;
       }
     }
   </style>
@@ -122,18 +324,28 @@
       <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari berdasarkan Nomor File, Divisi, atau Nama...">
     </div>
 
-    <table id="panduanTable">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Nomor File</th>
-          <th>Divisi</th>
-          <th>Nama</th>
-          <th>Download</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="table-container">
+      <table id="panduanTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nomor File</th>
+            <th>Divisi</th>
+            <th>Nama</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="loading" id="loadingIndicator">
+      <div class="spinner"></div>
+      <p>Memuat data panduan...</p>
+    </div>
+
+    <div class="results-info" id="resultsInfo"></div>
+    <div class="pagination" id="pagination"></div>
   </div>
 
   <!-- Firebase SDK -->
@@ -156,10 +368,14 @@
   <!-- Login check + Logout + Search + Auto-logout -->
   <script>
     let lastActivity = Date.now();
+    let allData = [];
+    let currentPage = 1;
+    const rowsPerPage = 10;
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         document.getElementById("userEmail").innerText = user.email;
+        loadData();
       } else {
         window.location.href = "login.html";
       }
@@ -173,14 +389,128 @@
 
     function filterTable() {
       const input = document.getElementById("searchInput").value.toLowerCase();
-      const rows = document.querySelectorAll("#panduanTable tbody tr");
-      rows.forEach(row => {
-        const [no, file, divisi, nama] = row.children;
-        const match = [file, divisi, nama].some(td =>
-          td.textContent.toLowerCase().includes(input)
-        );
-        row.style.display = match ? "" : "none";
+      const filteredData = allData.filter(row => {
+        return row.some(cell => cell.toLowerCase().includes(input));
       });
+      
+      displayData(filteredData);
+      currentPage = 1;
+      updatePagination(filteredData.length);
+    }
+
+    function displayData(data) {
+      const tableBody = document.querySelector("#panduanTable tbody");
+      tableBody.innerHTML = "";
+      
+      const startIndex = (currentPage - 1) * rowsPerPage;
+      const endIndex = startIndex + rowsPerPage;
+      const pageData = data.slice(startIndex, endIndex);
+      
+      pageData.forEach(row => {
+        const html = `
+          <tr>
+            <td>${row[0]}</td>
+            <td>${row[1]}</td>
+            <td>${row[2]}</td>
+            <td>${row[3]}</td>
+            <td><a class="download-icon" href="${row[4]}" target="_blank" download title="Download">⬇️</a></td>
+          </tr>`;
+        tableBody.innerHTML += html;
+      });
+      
+      // Update results info
+      const resultsInfo = document.getElementById("resultsInfo");
+      if (data.length === 0) {
+        resultsInfo.textContent = "Tidak ada hasil yang ditemukan";
+      } else {
+        resultsInfo.textContent = `Menampilkan ${startIndex + 1}-${Math.min(endIndex, data.length)} dari ${data.length} hasil`;
+      }
+    }
+
+    function updatePagination(totalRows) {
+      const pagination = document.getElementById("pagination");
+      pagination.innerHTML = "";
+      
+      const totalPages = Math.ceil(totalRows / rowsPerPage);
+      
+      if (totalPages <= 1) return;
+      
+      // Previous button
+      const prevButton = document.createElement("button");
+      prevButton.innerHTML = "&laquo;";
+      prevButton.disabled = currentPage === 1;
+      prevButton.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          displayData(getFilteredData());
+          updatePagination(totalRows);
+        }
+      });
+      pagination.appendChild(prevButton);
+      
+      // Page buttons
+      for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement("button");
+        pageButton.textContent = i;
+        pageButton.classList.toggle("active", i === currentPage);
+        pageButton.addEventListener("click", () => {
+          currentPage = i;
+          displayData(getFilteredData());
+          updatePagination(totalRows);
+        });
+        pagination.appendChild(pageButton);
+      }
+      
+      // Next button
+      const nextButton = document.createElement("button");
+      nextButton.innerHTML = "&raquo;";
+      nextButton.disabled = currentPage === totalPages;
+      nextButton.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          displayData(getFilteredData());
+          updatePagination(totalRows);
+        }
+      });
+      pagination.appendChild(nextButton);
+    }
+
+    function getFilteredData() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      if (!input) return allData;
+      
+      return allData.filter(row => {
+        return row.some(cell => cell.toLowerCase().includes(input));
+      });
+    }
+
+    function loadData() {
+      const sheetUrl = "https://docs.google.com/spreadsheets/d/1Vf3e0w4I8DW6j8tsjeiRfVN3Q3UMKrerL6gpbd1zxAw/gviz/tq?tqx=out:csv&sheet=panduan";
+
+      fetch(sheetUrl)
+        .then(res => res.text())
+        .then(csv => {
+          const rows = csv.split("\n").slice(1); // skip header
+          allData = [];
+          
+          rows.forEach(row => {
+            const cols = row.split(",").map(col => col.replace(/"/g, "").trim());
+            if (cols.length >= 5 && cols[0]) {
+              allData.push(cols);
+            }
+          });
+          
+          // Hide loading indicator
+          document.getElementById("loadingIndicator").style.display = "none";
+          
+          // Display data
+          displayData(allData);
+          updatePagination(allData.length);
+        })
+        .catch(error => {
+          console.error("Error loading data:", error);
+          document.getElementById("loadingIndicator").innerHTML = "<p>Gagal memuat data. Silakan refresh halaman.</p>";
+        });
     }
 
     document.body.addEventListener("mousemove", () => lastActivity = Date.now());
@@ -193,34 +523,6 @@
         });
       }
     }, 60 * 1000);
-  </script>
-
-  <!-- Load data from Google Sheets -->
-  <script>
-    const sheetUrl = "https://docs.google.com/spreadsheets/d/1Vf3e0w4I8DW6j8tsjeiRfVN3Q3UMKrerL6gpbd1zxAw/gviz/tq?tqx=out:csv&sheet=panduan";
-
-    fetch(sheetUrl)
-      .then(res => res.text())
-      .then(csv => {
-        const rows = csv.split("\n").slice(1); // skip header
-        const tableBody = document.querySelector("#panduanTable tbody");
-        tableBody.innerHTML = "";
-
-        rows.forEach(row => {
-          const cols = row.split(",").map(col => col.replace(/"/g, "").trim());
-          if (cols.length < 5 || !cols[0]) return;
-
-          const html = `
-            <tr>
-              <td>${cols[0]}</td>
-              <td>${cols[1]}</td>
-              <td>${cols[2]}</td>
-              <td>${cols[3]}</td>
-              <td><a class="download-icon" href="${cols[4]}" target="_blank" download title="Download">⬇️</a></td>
-            </tr>`;
-          tableBody.innerHTML += html;
-        });
-      });
   </script>
 </body>
 </html>
